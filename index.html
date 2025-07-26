@@ -626,3 +626,134 @@
   <button onclick="document.getElementById('myAudio').play()">▶ پخش صدا</button>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>آزمون ترکی استانبولی</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      direction: rtl;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      font-weight: bold;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #e0e0e0;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background-color: #d0d0d0;
+    }
+    #nextBtn {
+      margin-top: 20px;
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      display: none;
+    }
+    #result {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>آزمون ترکی استانبولی</h1>
+  <div class="question" id="question"></div>
+  <div class="options" id="options"></div>
+  <button id="nextBtn" onclick="nextQuestion()">سؤال بعدی</button>
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      {
+        q: "سلام به ترکی چی میشه؟",
+        options: ["Merhaba", "Güle güle", "Teşekkürler", "Lütfen"],
+        answer: "Merhaba"
+      },
+      {
+        q: "صبح بخیر به ترکی؟",
+        options: ["İyi akşamlar", "Günaydın", "İyi geceler", "Afiyet olsun"],
+        answer: "Günaydın"
+      },
+      {
+        q: "خداحافظ به ترکی؟",
+        options: ["Merhaba", "Hoş geldin", "Güle güle", "Evet"],
+        answer: "Güle güle"
+      },
+      // 👉 اینجا می‌تونی ادامه سوالاتت رو اضافه کنی تا به ۵۰ تا برسه
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById("question").innerText = `${current + 1}- ${q.q}`;
+      const opts = document.getElementById("options");
+      opts.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(opt);
+        opts.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[current].answer;
+      if (selected === correct) {
+        score++;
+      }
+      document.querySelectorAll("#options button").forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText === correct) {
+          btn.style.backgroundColor = "#90ee90";
+        } else if (btn.innerText === selected) {
+          btn.style.backgroundColor = "#f08080";
+        }
+      });
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+        document.getElementById("nextBtn").style.display = "none";
+      } else {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("options").style.display = "none";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("result").innerText = `آزمون تمام شد. نمره شما: ${score} از ${questions.length}`;
+      }
+    }
+
+    // Start
+    showQuestion();
+  </script>
+</body>

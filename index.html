@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش ترکی استانبولی - همه موقعیت‌ها</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .bounce {
+            animation: bounce 0.6s ease-in-out;
+        }
+        
+        .pulse-ring {
+            animation: pulseRing 2s infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .turkish-text {
+            font-family: 'Georgia', serif;
+            direction: ltr;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .audio-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .audio-button:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            transform: scale(1.05);
+        }
+        
+        .audio-button:active {
+            transform: scale(0.95);
+        }
+        
+        .situation-icon {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .select-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <!-- Header -->
+    <div class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="text-center">
+                <div class="text-4xl mb-2">🇹🇷</div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">آموزش ترکی استانبولی</h1>
+                <p class="text-gray-600">یادگیری عبارات کاربردی برای همه موقعیت‌های زندگی</p>
+                <div class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full mt-2">
+                    19 موقعیت کاربردی
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl p-4 text-center">
+                    <div class="text-2xl font-bold" id="totalPhrases">190</div>
+                    <div class="text-sm opacity-90">کل عبارات</div>
+                </div>
+                <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl p-4 text-center">
+                    <div class="text-2xl font-bold" id="learnedCount">0</div>
+                    <div class="text-sm opacity-90">یاد گرفته شده</div>
+                </div>
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-4 text-center">
+                    <div class="text-2xl font-bold" id="currentSituation">فرودگاه</div>
+                    <div class="text-sm opacity-90">موقعیت فعلی</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Situation Selector -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">🎯 انتخاب موقعیت</h2>
+            <div class="max-w-md mx-auto">
+                <select id="position-select" class="select-custom w-full text-white px-4 py-3 rounded-xl text-lg font-medium focus:outline-none focus:ring-4 focus:ring-purple-200">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mt-6">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>پیشرفت در این موقعیت</span>
+                    <span id="progressText">0 از 10 عبارت</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div id="progressBar" class="progress-bar h-3 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Container -->
+    <div class="max-w-7xl mx-auto px-4 pb-8">
+        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Audio Modal -->
+    <div id="audioModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center">
+            <div class="text-4xl mb-4">🔊</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">در حال پخش...</h3>
+            <p id="audioText" class="text-gray-600 mb-4 turkish-text"></p>
+            <div class="w-16 h-16 mx-auto mb-4">
+                <div class="w-full h-full bg-indigo-500 rounded-full pulse-ring"></div>
+            </div>
+            <button onclick="closeAudioModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-full transition-colors">
+                بستن
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive Turkish learning data for 19 situations
+        const data = {
+            "فرودگاه": [
+                { turkish: "Merhaba", farsi: "سلام", icon: "👋" },
+                { turkish: "İstanbul Havalimanı'na hoş geldiniz", farsi: "به فرودگاه استانبول خوش آمدید", icon: "✈️" },
+                { turkish: "Bagajım kayboldu", farsi: "چمدانم گم شده", icon: "🧳" },
+                { turkish: "Uçak kaçta kalkıyor?", farsi: "هواپیما ساعت چند پرواز می‌کند؟", icon: "🕐" },
+                { turkish: "Kapı numarası nedir?", farsi: "شماره گیت چیست؟", icon: "🚪" },
+                { turkish: "Gecikme var mı?", farsi: "تأخیر هست؟", icon: "⏰" },
+                { turkish: "Boarding pass nerede?", farsi: "کارت پرواز کجاست؟", icon: "🎫" },
+                { turkish: "Güvenlik kontrolü nerede?", farsi: "کنترل امنیتی کجاست؟", icon: "🔍" },
+                { turkish: "Duty free mağaza nerede?", farsi: "فروشگاه معاف از گمرک کجاست؟", icon: "🛍️" },
+                { turkish: "Taksi durağı nerede?", farsi: "ایستگاه تاکسی کجاست؟", icon: "🚕" }
+            ],
+            "کنترل گذرنامه": [
+                { turkish: "Pasaportum burada", farsi: "پاسپورتم اینجاست", icon: "📘" },
+                { turkish: "Türkiye'ye tatil için geliyorum", farsi: "برای تعطیلات به ترکیه آمده‌ام", icon: "🏖️" },
+                { turkish: "Kaç gün kalacaksınız?", farsi: "چند روز خواهید ماند؟", icon: "📅" },
+                { turkish: "Bir hafta kalacağım", farsi: "یک هفته خواهم ماند", icon: "📆" },
+                { turkish: "Nerede kalacaksınız?", farsi: "کجا اقامت خواهید کرد؟", icon: "🏨" },
+                { turkish: "Otelde kalacağım", farsi: "در هتل اقامت خواهم کرد", icon: "🛏️" },
+                { turkish: "İş için mi geliyorsunuz?", farsi: "برای کار آمده‌اید؟", icon: "💼" },
+                { turkish: "Hayır, turist olarak", farsi: "نه، به عنوان توریست", icon: "📸" },
+                { turkish: "Hoş geldiniz", farsi: "خوش آمدید", icon: "🤝" },
+                { turkish: "Teşekkür ederim", farsi: "متشکرم", icon: "🙏" }
+            ],
+            "هتل": [
+                { turkish: "Rezervasyonum var", farsi: "رزرو دارم", icon: "📋" },
+                { turkish: "Check-in yapmak istiyorum", farsi: "می‌خواهم وارد شوم", icon: "🔑" },
+                { turkish: "Oda anahtarı lütfen", farsi: "کلید اتاق لطفاً", icon: "🗝️" },
+                { turkish: "Kahvaltı saat kaçta?", farsi: "صبحانه ساعت چند است؟", icon: "🍳" },
+                { turkish: "WiFi şifresi nedir?", farsi: "رمز وای‌فای چیست؟", icon: "📶" },
+                { turkish: "Oda servisi var mı?", farsi: "سرویس اتاق هست؟", icon: "🛎️" },
+                { turkish: "Çamaşırhane nerede?", farsi: "رختشویخانه کجاست؟", icon: "👕" },
+                { turkish: "Check-out saat kaçta?", farsi: "خروج ساعت چند است؟", icon: "🕐" },
+                { turkish: "Fatura lütfen", farsi: "فاکتور لطفاً", icon: "🧾" },
+                { turkish: "Çok teşekkür ederim", farsi: "خیلی متشکرم", icon: "😊" }
+            ],
+            "رستوران": [
+                { turkish: "Masa ayırtmak istiyorum", farsi: "می‌خواهم میز رزرو کنم", icon: "🪑" },
+                { turkish: "Menü görebilir miyim?", farsi: "می‌توانم منو ببینم؟", icon: "📋" },
+                { turkish: "Ne tavsiye edersiniz?", farsi: "چه چیزی پیشنهاد می‌دهید؟", icon: "🤔" },
+                { turkish: "Kebab istiyorum", farsi: "کباب می‌خواهم", icon: "🍖" },
+                { turkish: "Su lütfen", farsi: "آب لطفاً", icon: "💧" },
+                { turkish: "Çay istiyorum", farsi: "چای می‌خواهم", icon: "🍵" },
+                { turkish: "Hesap lütfen", farsi: "حساب لطفاً", icon: "💳" },
+                { turkish: "Çok lezzetliydi", farsi: "خیلی خوشمزه بود", icon: "😋" },
+                { turkish: "Bahşiş dahil mi?", farsi: "انعام شامل است؟", icon: "💰" },
+                { turkish: "Afiyet olsun", farsi: "نوش جان", icon: "🍽️" }
+            ],
+            "خرید": [
+                { turkish: "Bu ne kadar?", farsi: "این چقدر است؟", icon: "💰" },
+                { turkish: "Çok pahalı", farsi: "خیلی گران است", icon: "💸" },
+                { turkish: "İndirim yapabilir misiniz?", farsi: "می‌توانید تخفیف بدهید؟", icon: "🏷️" },
+                { turkish: "Başka rengi var mı?", farsi: "رنگ دیگری دارد؟", icon: "🎨" },
+                { turkish: "Beden küçük", farsi: "سایز کوچک است", icon: "👕" },
+                { turkish: "Daha büyük var mı?", farsi: "بزرگتر دارید؟", icon: "📏" },
+                { turkish: "Kredi kartı kabul ediyor musunuz?", farsi: "کارت اعتباری قبول می‌کنید؟", icon: "💳" },
+                { turkish: "Nakit ödeyeceğim", farsi: "نقد پرداخت می‌کنم", icon: "💵" },
+                { turkish: "Poşet lütfen", farsi: "کیسه لطفاً", icon: "🛍️" },
+                { turkish: "Teşekkür ederim", farsi: "متشکرم", icon: "🙏" }
+            ],
+            "حمل و نقل": [
+                { turkish: "Otobüs durağı nerede?", farsi: "ایستگاه اتوبوس کجاست؟", icon: "🚌" },
+                { turkish: "Metro istasyonu nerede?", farsi: "ایستگاه مترو کجاست؟", icon: "🚇" },
+                { turkish: "Taksi çağırabilir misiniz?", farsi: "می‌توانید تاکسی صدا کنید؟", icon: "🚕" },
+                { turkish: "Taksimetre açık mı?", farsi: "کرایه‌سنج روشن است؟", icon: "📱" },
+                { turkish: "Bu otobüs nereye gidiyor?", farsi: "این اتوبوس کجا می‌رود؟", icon: "🗺️" },
+                { turkish: "Bilet ne kadar?", farsi: "بلیط چقدر است؟", icon: "🎫" },
+                { turkish: "İstanbulkart nerede alabilirim?", farsi: "کارت استانبول کجا می‌توانم بخرم؟", icon: "💳" },
+                { turkish: "Sonraki durakta ineceğim", farsi: "ایستگاه بعدی پیاده می‌شوم", icon: "🛑" },
+                { turkish: "Çok teşekkürler", farsi: "خیلی متشکرم", icon: "😊" },
+                { turkish: "İyi günler", farsi: "روز بخیر", icon: "👋" }
+            ],
+            "بیمارستان": [
+                { turkish: "Yardım edin", farsi: "کمک کنید", icon: "🆘" },
+                { turkish: "Hasta hissediyorum", farsi: "احساس بیماری می‌کنم", icon: "🤒" },
+                { turkish: "Doktor görmek istiyorum", farsi: "می‌خواهم دکتر ببینم", icon: "👨‍⚕️" },
+                { turkish: "Başım ağrıyor", farsi: "سرم درد می‌کند", icon: "🤕" },
+                { turkish: "Ateşim var", farsi: "تب دارم", icon: "🌡️" },
+                { turkish: "İlaç almam gerekiyor", farsi: "باید دارو بخورم", icon: "💊" },
+                { turkish: "Sigortam var", farsi: "بیمه دارم", icon: "📋" },
+                { turkish: "Acil servis nerede?", farsi: "اورژانس کجاست؟", icon: "🚑" },
+                { turkish: "Ambulans çağırın", farsi: "آمبولانس صدا کنید", icon: "🚨" },
+                { turkish: "Çok acil", farsi: "خیلی فوری است", icon: "⚡" }
+            ],
+            "پلیس": [
+                { turkish: "Yardım edin", farsi: "کمک کنید", icon: "🆘" },
+                { turkish: "Polis çağırın", farsi: "پلیس صدا کنید", icon: "👮" },
+                { turkish: "Çantam çalındı", farsi: "کیفم دزدیده شده", icon: "👜" },
+                { turkish: "Kayboldum", farsi: "گم شده‌ام", icon: "🗺️" },
+                { turkish: "Pasaportum kayboldu", farsi: "پاسپورتم گم شده", icon: "📘" },
+                { turkish: "Şikayet etmek istiyorum", farsi: "می‌خواهم شکایت کنم", icon: "📝" },
+                { turkish: "Konsolosluk nerede?", farsi: "کنسولگری کجاست؟", icon: "🏛️" },
+                { turkish: "Tercüman lazım", farsi: "مترجم لازم است", icon: "🗣️" },
+                { turkish: "Anlamıyorum", farsi: "نمی‌فهمم", icon: "❓" },
+                { turkish: "Türkçe bilmiyorum", farsi: "ترکی نمی‌دانم", icon: "🤷" }
+            ],
+            "بانک": [
+                { turkish: "Para çekmek istiyorum", farsi: "می‌خواهم پول برداشت کنم", icon: "💰" },
+                { turkish: "ATM nerede?", farsi: "خودپرداز کجاست؟", icon: "🏧" },
+                { turkish: "Döviz bozdurabilir miyim?", farsi: "می‌توانم ارز تبدیل کنم؟", icon: "💱" },
+                { turkish: "Dolar kurunu öğrenebilir miyim?", farsi: "می‌توانم نرخ دلار را بدانم؟", icon: "📈" },
+                { turkish: "Hesap açmak istiyorum", farsi: "می‌خواهم حساب باز کنم", icon: "📋" },
+                { turkish: "Kredi kartım bloke oldu", farsi: "کارت اعتباری‌ام مسدود شده", icon: "💳" },
+                { turkish: "PIN kodumu unuttum", farsi: "رمز کارتم را فراموش کرده‌ام", icon: "🔢" },
+                { turkish: "Havale yapmak istiyorum", farsi: "می‌خواهم حواله کنم", icon: "💸" },
+                { turkish: "Komisyon ne kadar?", farsi: "کمیسیون چقدر است؟", icon: "💵" },
+                { turkish: "Makbuz lütfen", farsi: "رسید لطفاً", icon: "🧾" }
+            ],
+            "داروخانه": [
+                { turkish: "Eczane nerede?", farsi: "داروخانه کجاست؟", icon: "💊" },
+                { turkish: "Bu ilacı arıyorum", farsi: "این دارو را می‌گردم", icon: "🔍" },
+                { turkish: "Reçete var", farsi: "نسخه دارم", icon: "📋" },
+                { turkish: "Ağrı kesici istiyorum", farsi: "مسکن می‌خواهم", icon: "💊" },
+                { turkish: "Soğuk algınlığı ilacı", farsi: "داروی سرماخوردگی", icon: "🤧" },
+                { turkish: "Vitamin var mı?", farsi: "ویتامین دارید؟", icon: "🍊" },
+                { turkish: "Nasıl kullanılır?", farsi: "چگونه استفاده می‌شود؟", icon: "❓" },
+                { turkish: "Günde kaç defa?", farsi: "روزی چند بار؟", icon: "🕐" },
+                { turkish: "Yan etkisi var mı?", farsi: "عارضه جانبی دارد؟", icon: "⚠️" },
+                { turkish: "Ne kadar tutar?", farsi: "چقدر می‌شود؟", icon: "💰" }
+            ],
+            "پست": [
+                { turkish: "Postane nerede?", farsi: "اداره پست کجاست؟", icon: "📮" },
+                { turkish: "Mektup göndermek istiyorum", farsi: "می‌خواهم نامه بفرستم", icon: "✉️" },
+                { turkish: "Paket göndereceğim", farsi: "بسته خواهم فرستاد", icon: "📦" },
+                { turkish: "Pul ne kadar?", farsi: "تمبر چقدر است؟", icon: "📮" },
+                { turkish: "Hızlı posta", farsi: "پست سریع", icon: "⚡" },
+                { turkish: "Kargo takip numarası", farsi: "شماره پیگیری بار", icon: "🔢" },
+                { turkish: "Ne zaman ulaşır?", farsi: "کی می‌رسد؟", icon: "📅" },
+                { turkish: "Sigortalı göndermek istiyorum", farsi: "می‌خواهم بیمه شده بفرستم", icon: "🛡️" },
+                { turkish: "Adres doğru mu?", farsi: "آدرس درست است؟", icon: "🏠" },
+                { turkish: "Makbuz lütfen", farsi: "رسید لطفاً", icon: "🧾" }
+            ],
+            "آرایشگاه": [
+                { turkish: "Saç kestirmek istiyorum", farsi: "می‌خواهم موهایم را کوتاه کنم", icon: "✂️" },
+                { turkish: "Randevu var mı?", farsi: "وقت آزاد دارید؟", icon: "📅" },
+                { turkish: "Şampuan yapın lütfen", farsi: "شامپو کنید لطفاً", icon: "🧴" },
+                { turkish: "Sakal tıraşı", farsi: "اصلاح ریش", icon: "🪒" },
+                { turkish: "Kısa kesin", farsi: "کوتاه کنید", icon: "📏" },
+                { turkish: "Çok kısa değil", farsi: "خیلی کوتاه نه", icon: "🙅" },
+                { turkish: "Böyle güzel", farsi: "اینطور خوب است", icon: "👍" },
+                { turkish: "Fön yapabilir misiniz?", farsi: "می‌توانید سشوار کنید؟", icon: "💨" },
+                { turkish: "Ne kadar tutar?", farsi: "چقدر می‌شود؟", icon: "💰" },
+                { turkish: "Çok teşekkürler", farsi: "خیلی متشکرم", icon: "😊" }
+            ],
+            "تاکسی": [
+                { turkish: "Taksi!", farsi: "تاکسی!", icon: "🚕" },
+                { turkish: "Havalimanına gitmek istiyorum", farsi: "می‌خواهم به فرودگاه بروم", icon: "✈️" },
+                { turkish: "Bu adrese götürün", farsi: "به این آدرس ببرید", icon: "📍" },
+                { turkish: "Ne kadar sürer?", farsi: "چقدر طول می‌کشد؟", icon: "⏰" },
+                { turkish: "Taksimetre açın lütfen", farsi: "کرایه‌سنج را روشن کنید لطفاً", icon: "📱" },
+                { turkish: "Çok hızlı gidiyorsunuz", farsi: "خیلی تند می‌روید", icon: "⚡" },
+                { turkish: "Burada durun", farsi: "اینجا توقف کنید", icon: "🛑" },
+                { turkish: "Ne kadar oldu?", farsi: "چقدر شد؟", icon: "💰" },
+                { turkish: "Para üstü lazım değil", farsi: "پول خرد لازم نیست", icon: "💵" },
+                { turkish: "Teşekkür ederim", farsi: "متشکرم", icon: "🙏" }
+            ],
+            "مدرسه": [
+                { turkish: "Türkçe öğrenmek istiyorum", farsi: "می‌خواهم ترکی یاد بگیرم", icon: "📚" },
+                { turkish: "Kurs ne zaman başlıyor?", farsi: "دوره کی شروع می‌شود؟", icon: "📅" },
+                { turkish: "Kayıt olmak istiyorum", farsi: "می‌خواهم ثبت نام کنم", icon: "📝" },
+                { turkish: "Ücret ne kadar?", farsi: "هزینه چقدر است؟", icon: "💰" },
+                { turkish: "Seviyem başlangıç", farsi: "سطح من مبتدی است", icon: "🌱" },
+                { turkish: "Öğretmen kimdir?", farsi: "معلم کیست؟", icon: "👨‍🏫" },
+                { turkish: "Kitap gerekli mi?", farsi: "کتاب لازم است؟", icon: "📖" },
+                { turkish: "Sınıf nerede?", farsi: "کلاس کجاست؟", icon: "🏫" },
+                { turkish: "Saat kaçta?", farsi: "ساعت چند؟", icon: "🕐" },
+                { turkish: "Sertifika verilir mi?", farsi: "گواهینامه داده می‌شود؟", icon: "🏆" }
+            ],
+            "ورزش": [
+                { turkish: "Spor salonu nerede?", farsi: "باشگاه ورزشی کجاست؟", icon: "🏋️" },
+                { turkish: "Üyelik ücreti ne kadar?", farsi: "هزینه عضویت چقدر است؟", icon: "💳" },
+                { turkish: "Havuz var mı?", farsi: "استخر دارد؟", icon: "🏊" },
+                { turkish: "Antrenör var mı?", farsi: "مربی دارد؟", icon: "👨‍💼" },
+                { turkish: "Soyunma odası nerede?", farsi: "رختکن کجاست؟", icon: "🚪" },
+                { turkish: "Duş alabilir miyim?", farsi: "می‌توانم دوش بگیرم؟", icon: "🚿" },
+                { turkish: "Kaçta açılıyor?", farsi: "ساعت چند باز می‌شود؟", icon: "🕐" },
+                { turkish: "Kaçta kapanıyor?", farsi: "ساعت چند بسته می‌شود؟", icon: "🕕" },
+                { turkish: "Günlük üyelik var mı?", farsi: "عضویت روزانه دارد؟", icon: "📅" },
+                { turkish: "Teşekkür ederim", farsi: "متشکرم", icon: "🙏" }
+            ],
+            "سینما": [
+                { turkish: "Hangi filmler oynuyor?", farsi: "چه فیلم‌هایی اکران می‌شود؟", icon: "🎬" },
+                { turkish: "Bilet ne kadar?", farsi: "بلیط چقدر است؟", icon: "🎫" },
+                { turkish: "Seans saatleri nedir?", farsi: "ساعات سانس چیست؟", icon: "🕐" },
+                { turkish: "İki bilet lütfen", farsi: "دو بلیط لطفاً", icon: "🎟️" },
+                { turkish: "Altyazılı mı?", farsi: "زیرنویس دارد؟", icon: "📝" },
+                { turkish: "Dublajlı mı?", farsi: "دوبله شده؟", icon: "🗣️" },
+                { turkish: "Salon numarası nedir?", farsi: "شماره سالن چیست؟", icon: "🔢" },
+                { turkish: "Patlamış mısır var mı?", farsi: "پاپ کورن دارد؟", icon: "🍿" },
+                { turkish: "İçecek istiyorum", farsi: "نوشیدنی می‌خواهم", icon: "🥤" },
+                { turkish: "Film ne zaman başlıyor?", farsi: "فیلم کی شروع می‌شود؟", icon: "▶️" }
+            ],
+            "کتابخانه": [
+                { turkish: "Kütüphane nerede?", farsi: "کتابخانه کجاست؟", icon: "📚" },
+                { turkish: "Üye olmak istiyorum", farsi: "می‌خواهم عضو شوم", icon: "📝" },
+                { turkish: "Kitap ödünç alabilir miyim?", farsi: "می‌توانم کتاب قرض بگیرم؟", icon: "📖" },
+                { turkish: "Bu kitabı arıyorum", farsi: "این کتاب را می‌گردم", icon: "🔍" },
+                { turkish: "İade tarihi ne zaman?", farsi: "تاریخ بازگشت کی است؟", icon: "📅" },
+                { turkish: "Bilgisayar kullanabilir miyim?", farsi: "می‌توانم از کامپیوتر استفاده کنم؟", icon: "💻" },
+                { turkish: "İnternet var mı?", farsi: "اینترنت دارد؟", icon: "🌐" },
+                { turkish: "Sessiz alan nerede?", farsi: "قسمت ساکت کجاست؟", icon: "🤫" },
+                { turkish: "Fotokopi makinesi var mı?", farsi: "دستگاه فتوکپی دارد؟", icon: "📄" },
+                { turkish: "Kaçta kapanıyor?", farsi: "ساعت چند بسته می‌شود؟", icon: "🕕" }
+            ],
+            "پارک": [
+                { turkish: "Park nerede?", farsi: "پارک کجاست؟", icon: "🌳" },
+                { turkish: "Giriş ücreti var mı?", farsi: "ورودی پولی است؟", icon: "💰" },
+                { turkish: "Kaçta açılıyor?", farsi: "ساعت چند باز می‌شود؟", icon: "🕐" },
+                { turkish: "Kaçta kapanıyor?", farsi: "ساعت چند بسته می‌شود؟", icon: "🕕" },
+                { turkish: "Çocuk oyun alanı var mı?", farsi: "زمین بازی کودکان دارد؟", icon: "🎠" },
+                { turkish: "Piknik yapabilir miyiz?", farsi: "می‌توانیم پیک نیک کنیم؟", icon: "🧺" },
+                { turkish: "Tuvalet nerede?", farsi: "دستشویی کجاست؟", icon: "🚻" },
+                { turkish: "Çeşme var mı?", farsi: "آب خوری دارد؟", icon: "⛲" },
+                { turkish: "Köpek getirebilir miyim?", farsi: "می‌توانم سگ بیاورم؟", icon: "🐕" },
+                { turkish: "Çok güzel bir park", farsi: "پارک خیلی زیبایی است", icon: "😍" }
+            ],
+            "موزه": [
+                { turkish: "Müze nerede?", farsi: "موزه کجاست؟", icon: "🏛️" },
+                { turkish: "Giriş ücreti ne kadar?", farsi: "ورودی چقدر است؟", icon: "🎫" },
+                { turkish: "Öğrenci indirimi var mı?", farsi: "تخفیف دانشجویی دارد؟", icon: "🎓" },
+                { turkish: "Rehber var mı?", farsi: "راهنما دارد؟", icon: "👨‍🏫" },
+                { turkish: "Fotoğraf çekebilir miyim?", farsi: "می‌توانم عکس بگیرم؟", icon: "📸" },
+                { turkish: "Ses rehberi var mı?", farsi: "راهنمای صوتی دارد؟", icon: "🎧" },
+                { turkish: "Kaç saat sürer?", farsi: "چند ساعت طول می‌کشد؟", icon: "⏰" },
+                { turkish: "Hediye dükkanı var mı?", farsi: "فروشگاه هدیه دارد؟", icon: "🛍️" },
+                { turkish: "Kafeterya var mı?", farsi: "کافه تریا دارد؟", icon: "☕" },
+                { turkish: "Çok ilginç", farsi: "خیلی جالب است", icon: "🤔" }
+            ]
+        };
+
+        // Game state
+        let learnedPhrases = new Set();
+        let currentSituation = 'فرودگاه';
+
+        // Initialize the app
+        function initializeApp() {
+            populateSelect();
+            showSentences(currentSituation);
+            updateStats();
+        }
+
+        // Populate situation selector
+        function populateSelect() {
+            const select = document.getElementById('position-select');
+            const situations = Object.keys(data);
+            
+            situations.forEach(situation => {
+                const option = document.createElement('option');
+                option.value = situation;
+                option.textContent = situation;
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', (e) => {
+                currentSituation = e.target.value;
+                showSentences(currentSituation);
+                updateCurrentSituation();
+            });
+        }
+
+        // Show sentences for selected situation
+        function showSentences(situation) {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            
+            const phrases = data[situation];
+            phrases.forEach((phrase, index) => {
+                const card = createCard(phrase, index);
+                container.appendChild(card);
+            });
+            
+            updateProgress();
+        }
+
+        // Create individual card
+        function createCard(phrase, index) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-2xl shadow-lg p-6 card-hover fade-in';
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            const isLearned = learnedPhrases.has(`${currentSituation}-${phrase.turkish}`);
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-3xl">${phrase.icon}</div>
+                    <div class="situation-icon text-white text-xs px-3 py-1 rounded-full">
+                        ${currentSituation}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="text-sm text-gray-500 mb-1">ترکی:</div>
+                    <h3 class="text-xl font-bold text-gray-800 turkish-text mb-2">${phrase.turkish}</h3>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="text-sm text-gray-500 mb-1">فارسی:</div>
+                    <p class="text-lg text-gray-700 font-medium">${phrase.farsi}</p>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="playAudio('${phrase.turkish}')" 
+                            class="audio-button flex-1 text-white px-4 py-3 rounded-xl font-medium flex items-center justify-center gap-2">
+                        <span class="text-lg">🔊</span>
+                        تلفظ
+                    </button>
+                    <button onclick="markAsLearned('${phrase.turkish}')" 
+                            class="flex-1 ${isLearned ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} text-white px-4 py-3 rounded-xl font-medium transition-all"
+                            ${isLearned ? 'disabled' : ''}>
+                        <span class="text-lg">${isLearned ? '✓' : '📚'}</span>
+                        ${isLearned ? 'یاد گرفته شده' : 'یاد گرفتم'}
+                    </button>
+                </div>
+                
+                ${isLearned ? '<div class="mt-3 text-center text-green-600 font-medium"><span class="text-lg">🎉</span> یاد گرفته شده!</div>' : ''}
+            `;
+            
+            if (isLearned) {
+                card.classList.add('opacity-75');
+            }
+            
+            return card;
+        }
+
+        // Play audio function
+        function playAudio(text) {
+            document.getElementById('audioModal').classList.remove('hidden');
+            document.getElementById('audioText').textContent = text;
+            
+            // Generate filename from Turkish text
+            const filename = generateAudioFilename(text);
+            const audioPath = `audio/${currentSituation.toLowerCase()}/${filename}`;
+            
+            // Try to play real audio file first
+            const audio = new Audio(audioPath);
+            
+            audio.onloadeddata = () => {
+                console.log('Playing real audio file:', audioPath);
+                audio.play();
+            };
+            
+            audio.onerror = () => {
+                console.log('Audio file not found, using TTS fallback');
+                // Fallback to text-to-speech if audio file doesn't exist
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'tr-TR';
+                    utterance.rate = 0.8;
+                    utterance.voice = getTurkishVoice();
+                    speechSynthesis.speak(utterance);
+                }
+            };
+            
+            // Auto-close modal
+            setTimeout(() => {
+                closeAudioModal();
+            }, 4000);
+        }
+        
+        // Generate audio filename from Turkish text
+        function generateAudioFilename(text) {
+            return text.toLowerCase()
+                .replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ\s]/g, '')
+                .replace(/\s+/g, '_')
+                .replace(/ğ/g, 'g')
+                .replace(/ü/g, 'u')
+                .replace(/ş/g, 's')
+                .replace(/ı/g, 'i')
+                .replace(/ö/g, 'o')
+                .replace(/ç/g, 'c')
+                .replace(/Ğ/g, 'G')
+                .replace(/Ü/g, 'U')
+                .replace(/Ş/g, 'S')
+                .replace(/İ/g, 'I')
+                .replace(/Ö/g, 'O')
+                .replace(/Ç/g, 'C') + '.mp3';
+        }
+        
+        // Get best Turkish voice for TTS fallback
+        function getTurkishVoice() {
+            const voices = speechSynthesis.getVoices();
+            return voices.find(voice => 
+                voice.lang === 'tr-TR' || 
+                voice.lang === 'tr' ||
+                voice.name.includes('Turkish')
+            ) || voices[0];
+        }
+
+        // Close audio modal
+        function closeAudioModal() {
+            document.getElementById('audioModal').classList.add('hidden');
+            speechSynthesis.cancel();
+        }
+
+        // Mark phrase as learned
+        function markAsLearned(phraseText) {
+            const key = `${currentSituation}-${phraseText}`;
+            learnedPhrases.add(key);
+            showSentences(currentSituation);
+            updateStats();
+        }
+
+        // Update progress for current situation
+        function updateProgress() {
+            const totalInSituation = data[currentSituation].length;
+            const learnedInSituation = data[currentSituation].filter(phrase => 
+                learnedPhrases.has(`${currentSituation}-${phrase.turkish}`)
+            ).length;
+            
+            const percentage = (learnedInSituation / totalInSituation) * 100;
+            
+            document.getElementById('progressText').textContent = `${learnedInSituation} از ${totalInSituation} عبارت`;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+        }
+
+        // Update overall stats
+        function updateStats() {
+            const totalPhrases = Object.values(data).reduce((sum, phrases) => sum + phrases.length, 0);
+            const learnedCount = learnedPhrases.size;
+            
+            document.getElementById('totalPhrases').textContent = totalPhrases;
+            document.getElementById('learnedCount').textContent = learnedCount;
+        }
+
+        // Update current situation display
+        function updateCurrentSituation() {
+            document.getElementById('currentSituation').textContent = currentSituation;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('audioModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeAudioModal();
+            }
+        });
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9651be68d7bc9004',t:'MTc1MzUxMDMyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
